@@ -2,9 +2,9 @@
 
 :root {
   --color-bg-primary: #F4FAF0;
+  --color-bg-main:#ffffff;
   --color-bg-secondary: #F0F8E8;
-  --color-bg-card: #FFFFFF;
-  --color-bg-card-hover: #F5F9F5;
+  --color-bg-card: #f7f7f7;
   --color-bg-inset: #E8F5E8;
 
   --color-text-primary: #1B4D1A;
@@ -94,7 +94,6 @@ body {
 }
 
 .cluster-card {
-  transition: box-shadow var(--transition-base), border-color var(--transition-base);
   container-type: inline-size;
 }
 

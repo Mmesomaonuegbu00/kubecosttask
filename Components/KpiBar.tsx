@@ -85,16 +85,16 @@ const KpiItem: FC<KpiItemProps> = ({
       }}
     >
       <div
-        className="absolute top-0 left-0 right-0 h-[2px] rounded-t-full"
+        className="absolute top-0 left-0 right-0 h-0.5 rounded-t-full"
         style={{ backgroundColor: accent, opacity: 0.7 }}
       />
 
-      <div className="text-[10px] text-(--color-text-muted) uppercase tracking-[0.08em] mb-2 font-[var(--font-geist-sans)]">
+      <div className="text-[10px] text-(--color-text-muted) uppercase tracking-[0.08em] mb-2  ">
         {label}
       </div>
 
       <div className="flex items-end gap-2 mb-1">
-        <div className="text-[26px] font-bold text-(--color-text-primary) leading-none tracking-[-0.02em] font-[var(--font-geist-mono)]">
+        <div className="text-[26px] font-bold text-(--color-text-primary) leading-none tracking-[-0.02em]  ">
           {visible ? (
             <CountUp
               value={value}
@@ -109,7 +109,7 @@ const KpiItem: FC<KpiItemProps> = ({
 
         {trend !== undefined && (
           <div
-            className={`flex items-center gap-1 text-[11px] font-semibold pb-[2px] ${
+            className={`flex items-center gap-1 text-[11px] font-semibold pb-0.5 ${
               isPositiveTrend
                 ? "text-(--color-accent-success)"
                 : "text-(--color-accent-error)"
@@ -129,7 +129,7 @@ const KpiItem: FC<KpiItemProps> = ({
         )}
       </div>
 
-      <div className="text-[11px] text-(--color-text-muted) font-[var(--font-geist-sans)]">
+      <div className="text-[11px] text-(--color-text-muted)  ">
         {sublabel}
       </div>
     </div>

@@ -14,53 +14,38 @@ const WorkflowCard: FC<WorkflowCardProps> = ({ workflow, index }) => {
 
   return (
     <div
-      className="workflow-card rounded-md border bg-(--color-bg-inset) border-(--color-border) p-4 transition-all"
+      className="workflow-card flex-col flex gap-10"
       style={{ animationDelay: `${index * 50}ms` }}
     >
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2 min-w-0">
-          <div
-            className="w-2 h-2 rounded-full flex-shrink-0"
-            style={{ backgroundColor: "var(--color-accent-primary)" }}
-          />
-          <span className="text-[14px] font-semibold text-(--color-text-primary) truncate">
-            {workflow.name}
-          </span>
+      <div className="p-5 pb-0 bg-(--color-bg-primary) border border-(--color-border) overflow-hidden transition-all duration-500 ease-out ">
+        <div className="flex items-start justify-between gap-3 mb-4 h-20">
+          <div className="flex items-center gap-2.5">
+            <div>
+              <h2 className="m-0 text-[15px] font-semibold text-(--color-text-primary) tracking-[-0.01em]">
+                {workflow.name}
+              </h2>
+              <span className="text-[11px] text-(--color-text-muted)  ">
+                Workflow · Kubernetes
+              </span>
+            </div>
+          </div>
+
+          <div className="text-right">
+            <div className="text-[22px] font-bold text-(--color-text-primary) leading-none tracking-[-0.02em]">
+              ${total.toFixed(2)}
+            </div>
+            <div className="text-[10px] text-(--color-text-muted) mt-0.5">
+              monthly spend
+            </div>
+          </div>
         </div>
-        <span className="text-[13px] font-bold text-(--color-accent-primary) font-[var(--font-geist-mono)] flex-shrink-0 ml-2">
-          ${total.toFixed(2)}
-        </span>
       </div>
 
-      <div className="mb-3">
+      <div className="mb-4 p-5 pb-0 bg-(--color-bg-card) min-h-70">
+        <div className="text-[10px] text-(--color-text-muted) uppercase tracking-[0.08em] mb-2  ">
+          Resource Allocation
+        </div>
         <MetricsBar metrics={workflow.metrics} />
-      </div>
-
-      <div className="grid grid-cols-2 gap-2 text-[11px]">
-        <div className="flex justify-between">
-          <span className="text-(--color-text-muted)">CPU:</span>
-          <span className="font-[var(--font-geist-mono)] text-(--color-text-primary)">${workflow.metrics.cpu.toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-(--color-text-muted)">RAM:</span>
-          <span className="font-[var(--font-geist-mono)] text-(--color-text-primary)">${workflow.metrics.ram.toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-(--color-text-muted)">Storage:</span>
-          <span className="font-[var(--font-geist-mono)] text-(--color-text-primary)">${workflow.metrics.storage.toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-(--color-text-muted)">Network:</span>
-          <span className="font-[var(--font-geist-mono)] text-(--color-text-primary)">${workflow.metrics.network.toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-(--color-text-muted)">GPU:</span>
-          <span className="font-[var(--font-geist-mono)] text-(--color-text-primary)">${workflow.metrics.gpu.toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-(--color-text-muted)">Efficiency:</span>
-          <span className="font-[var(--font-geist-mono)] text-(--color-text-primary)">{workflow.metrics.efficiency.toFixed(1)}%</span>
-        </div>
       </div>
     </div>
   );

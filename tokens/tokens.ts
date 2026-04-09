@@ -1,4 +1,3 @@
-// tokens.ts — single source of truth for all design values
 export const tokens = {
   colors: {
     bgPrimary: "var(--color-bg-primary)",

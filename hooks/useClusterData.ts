@@ -1,7 +1,3 @@
-// hooks/useClusterData.ts
-// Manual in-memory cache with stale-while-revalidate pattern
-// Prevents redundant fetches on re-renders/navigation
-
 import { useState, useEffect, useRef } from "react";
 
 export interface Metrics {

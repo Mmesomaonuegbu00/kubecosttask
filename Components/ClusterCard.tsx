@@ -3,7 +3,6 @@
 import React, { FC, useState, useRef, useEffect } from "react";
 import { Cluster } from "../hooks/useClusterData";
 import MetricsBar from "./MetricsBar";
-import NamespaceCard from "./NamespaceCard";
 
 interface ClusterCardProps {
   cluster: Cluster;
@@ -61,7 +60,7 @@ const ClusterCard: FC<ClusterCardProps> = ({ cluster, index, onClick }) => {
   return (
     <div
       ref={ref}
-      className="cluster-card rounded-lg bg-(--color-bg-card) border border-(--color-border) shadow-(--shadow-card) overflow-hidden transition-all duration-500 ease-out cursor-pointer hover:shadow-(--shadow-card-hover)"
+      className="cluster-card flex-col flex gap-10"
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(24px)",
@@ -69,14 +68,14 @@ const ClusterCard: FC<ClusterCardProps> = ({ cluster, index, onClick }) => {
       }}
       onClick={onClick}
     >
-      <div className="p-5 pb-0">
+      <div className="p-5 pb-0 bg-(--color-bg-primary)  border border-(--color-border)  overflow-hidden transition-all duration-500 ease-out cursor-pointer min-h-30">
         <div className="flex items-start justify-between gap-3 mb-4">
           <div className="flex items-center gap-2.5">
             <div>
               <h2 className="m-0 text-[15px] font-semibold text-(--color-text-primary) tracking-[-0.01em]">
                 {cluster.name}
               </h2>
-              <span className="text-[11px] text-(--color-text-muted) font-[var(--font-geist-sans)]">
+              <span className="text-[11px] text-(--color-text-muted)  ">
                 {nsCount} namespace{nsCount !== 1 ? "s" : ""} · Kubernetes
               </span>
             </div>
@@ -106,19 +105,22 @@ const ClusterCard: FC<ClusterCardProps> = ({ cluster, index, onClick }) => {
               strokeLinejoin="round"
             />
           </svg>
-          <span className="text-[11px] text-(--color-accent-success) font-[var(--font-geist-sans)]">
+          <span className="text-[11px] text-(--color-accent-success) ">
             Save up to {savingsPct}% · $
-            {cluster.savingsOpportunity.toFixed(0)} potential
+            {cluster.savingsOpportunity.toFixed(0)}
           </span>
         </div>
 
-        <div className="mb-4">
-          <div className="text-[10px] text-(--color-text-muted) uppercase tracking-[0.08em] mb-2 font-[var(--font-geist-sans)]">
+        
+      </div>
+
+
+      <div className="mb-4 p-5 pb-0 bg-(--color-bg-card) min-h-70">
+          <div className="text-[10px] text-(--color-text-muted) uppercase tracking-[0.08em] mb-2">
             Resource Allocation
           </div>
           <MetricsBar metrics={cluster.metrics} />
         </div>
-      </div>
     </div>
   );
 };

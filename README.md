@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kubecost Dashboard
+
+A modern, responsive dashboard for visualizing Kubernetes cost allocation across clusters, namespaces, and workflows. Built with Next.js, TypeScript, and Tailwind CSS.
+
+## Features
+
+- **Hierarchical Cost View**: Navigate from clusters to namespaces to individual workflows
+- **Real-time Metrics**: CPU, RAM, storage, network, GPU, and efficiency costs
+- **Animated Visualizations**: Smooth count-up animations and progress bars
+- **Responsive Design**: Optimized for desktop and mobile devices
+- **Dark/Light Mode Ready**: Token-based theming system
+
+## Project Structure
+
+```
+kubecost/
+├── app/                    # Next.js app directory
+│   ├── globals.css         # Global styles and CSS variables
+│   ├── layout.tsx          # Root layout
+│   └── page.tsx            # Main dashboard page
+├── Components/             # React components
+│   ├── ClusterCard.tsx     # Cluster overview card
+│   ├── Dashboard.tsx       # Main dashboard layout
+│   ├── KpiBar.tsx          # Key performance indicators
+│   ├── MetricsBar.tsx      # Resource allocation bars
+│   ├── NamespaceCard.tsx   # Namespace details card
+│   ├── SpendChart.tsx      # Cost visualization chart
+│   └── WorkflowCard.tsx    # Workflow cost card
+├── hooks/
+│   └── useClusterData.ts   # Data fetching and caching hook
+├── tokens/
+│   └── tokens.ts           # Design tokens and theme variables
+└── public/                 # Static assets
+```
 
 ## Getting Started
 
-First, run the development server:
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Data Architecture
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application fetches mock data from a JSON API and transforms it into Kubernetes cost metrics:
 
-## Learn More
+- **Clusters**: Top-level grouping with aggregated costs
+- **Namespaces**: Logical groupings within clusters
+- **Workflows**: Individual workloads with detailed resource usage
 
-To learn more about Next.js, take a look at the following resources:
+## Design System
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+All styling uses CSS custom properties defined in `tokens/tokens.ts` for consistent theming:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Colors: Primary, secondary, accent, and semantic colors
+- Typography: Font families and sizes
+- Spacing: Consistent margins and padding
+- Animations: Smooth transitions and entrance effects
 
-## Deploy on Vercel
+## Technologies Used
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Next.js 16**: React framework with App Router
+- **TypeScript**: Type-safe development
+- **Tailwind CSS**: Utility-first styling
+- **React Hooks**: State management and side effects
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
