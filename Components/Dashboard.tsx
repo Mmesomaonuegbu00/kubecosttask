@@ -99,7 +99,7 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="min-h-screen  flex items-center justify-center px-4">
+    <div className="min-h-screen my-6 flex items-center justify-center px-4">
       
       <main className="w-full max-w-350 bg-(--color-bg-main) border border-(--color-border) rounded-xl shadow-lg px-[clamp(16px,4vw,40px)] py-7 pb-16">
 

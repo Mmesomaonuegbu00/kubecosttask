@@ -50,8 +50,8 @@ const NamespaceCard: FC<NamespaceCardProps> = ({ namespace, index, onClick }) =>
       animate={visible ? "visible" : "hidden"}
       onClick={onClick}
     >
-      <div className="p-5 pb-0 bg-(--color-bg-primary) border border-(--color-border) overflow-hidden transition-all duration-500 ease-out cursor-pointer min-h-20 ">
-        <div className="flex items-start justify-between gap-3 mb-4">
+      <div className="p-5 pb-0 bg-(--color-bg-primary) border border-(--color-border) overflow-hidden transition-all duration-500 ease-out cursor-pointer h-40 md:max-h-30 ">
+        <div className="flex flex-col md:flex-row items-start justify-between gap-3 mb-4">
           <div className="flex items-center gap-2.5">
             <div>
               <h2 className="m-0 text-[15px] font-semibold text-(--color-text-primary) tracking-[-0.01em]">
@@ -63,7 +63,7 @@ const NamespaceCard: FC<NamespaceCardProps> = ({ namespace, index, onClick }) =>
             </div>
           </div>
 
-          <div className="text-right">
+          <div className="md:text-right">
             <div className="text-[22px] font-bold text-(--color-text-primary) leading-none tracking-[-0.02em]">
               ${total.toFixed(0)}
             </div>
