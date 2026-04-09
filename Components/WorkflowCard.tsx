@@ -49,7 +49,7 @@ const WorkflowCard: FC<WorkflowCardProps> = ({ workflow, index }) => {
       animate={visible ? "visible" : "hidden"}
     >
       <div className="p-5 pb-0 bg-(--color-bg-primary) border border-(--color-border) overflow-hidden transition-all duration-500 ease-out ">
-        <div className="flex items-start justify-between gap-3 mb-4 h-20">
+        <div className="flex flex-col md:flex-row items-start justify-between gap-3 mb-4 h-40 md:max-h-30 ">
           <div className="flex items-center gap-2.5">
             <div>
               <h2 className="m-0 text-[15px] font-semibold text-(--color-text-primary) tracking-[-0.01em]">
