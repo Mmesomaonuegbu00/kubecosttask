@@ -1,6 +1,7 @@
 "use client";
 
 import React, { FC, useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { Metrics } from "../hooks/useClusterData";
 
 const METRICS_CONFIG = [
@@ -13,22 +14,28 @@ const METRICS_CONFIG = [
 ];
 
 interface MetricsBarProps {
-  metrics: Metrics;      // actual data values
-  compact?: boolean;     // small version or full version
+  metrics: Metrics;
+  compact?: boolean;
 }
 
+
+
 const MetricsBar: FC<MetricsBarProps> = ({ metrics, compact = false }) => {
+
+  
 
   const totalValue = Object.values(metrics).reduce((sum, value) => sum + value, 0);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
+
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true); // trigger animation
+          setIsVisible(true);
         }
       },
       { threshold: 0.1 }
@@ -49,6 +56,18 @@ const MetricsBar: FC<MetricsBarProps> = ({ metrics, compact = false }) => {
           const percentage =
             totalValue > 0 ? (value / totalValue) * 100 : 0;
 
+          const barVariants = {
+            hidden: { width: "0%" },
+            visible: {
+              width: `${percentage}%`,
+              transition: {
+                delay: index * 0.05,
+                duration: 0.5,
+                ease: "easeOut",
+              },
+            },
+          };
+
           return (
             <div key={metric.id} className="flex items-center gap-2">
 
@@ -62,14 +81,14 @@ const MetricsBar: FC<MetricsBarProps> = ({ metrics, compact = false }) => {
               </span>
 
               <div className="flex-1 h-1 rounded-full bg-(--color-bg-inset) overflow-hidden">
-                <div
+                <motion.div
                   className="h-full rounded-full"
                   style={{
-                    width: isVisible ? `${percentage}%` : "0%",
                     backgroundColor: metric.color,
-                    transition: `width ${500 + index * 60}ms cubic-bezier(0.34,1.2,0.64,1)`,
-                    transitionDelay: `${index * 50}ms`,
                   }}
+                  variants={{barVariants}}
+                  initial="hidden"
+                  animate={isVisible ? "visible" : "hidden"}
                 />
               </div>
 

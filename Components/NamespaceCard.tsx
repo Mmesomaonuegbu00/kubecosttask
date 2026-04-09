@@ -1,6 +1,7 @@
 "use client";
 
-import React, { FC } from "react";
+import React, { FC, useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 import { Namespace } from "../hooks/useClusterData";
 import MetricsBar from "./MetricsBar";
 
@@ -11,12 +12,42 @@ interface NamespaceCardProps {
 }
 
 const NamespaceCard: FC<NamespaceCardProps> = ({ namespace, index, onClick }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setVisible(true);
+      },
+      { threshold: 0.05 }
+    );
+
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
   const total = Object.values(namespace.metrics).reduce((s, v) => s + v, 0);
 
+  const cardVariants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: index * 0.1,
+        duration: 0.5,
+      },
+    },
+  };
+
   return (
-    <div
+    <motion.div
+      ref={ref}
       className="namespace-card flex-col flex gap-10"
-      style={{ animationDelay: `${index * 80}ms` }}
+      variants={cardVariants}
+      initial="hidden"
+      animate={visible ? "visible" : "hidden"}
       onClick={onClick}
     >
       <div className="p-5 pb-0 bg-(--color-bg-primary) border border-(--color-border) overflow-hidden transition-all duration-500 ease-out cursor-pointer min-h-20 ">
@@ -49,7 +80,7 @@ const NamespaceCard: FC<NamespaceCardProps> = ({ namespace, index, onClick }) =>
         </div>
         <MetricsBar metrics={namespace.metrics} />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

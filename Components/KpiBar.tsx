@@ -1,6 +1,7 @@
 "use client";
 
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useRef, useState, useEffect } from "react";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { KpiData } from "../hooks/useClusterData";
 
 interface KpiBarProps {
@@ -13,26 +14,41 @@ const CountUp: FC<{ value: number; prefix?: string; suffix?: string; decimals?: 
   suffix = "",
   decimals = 0,
 }) => {
-  const [display, setDisplay] = useState(0);
-  const raf = useRef<number>(0);
+  const count = useMotionValue(0);
+  const display = useTransform(count, (latest) => {
+    return `${prefix}${Math.floor(latest).toFixed(decimals)}${suffix}`;
+  });
 
   useEffect(() => {
-    const start = Date.now();
-    const duration = 1100;
+    const controls = async () => {
+      await new Promise<void>((resolve) => {
+        let frameId: number;
+        const start = Date.now();
+        const duration = 1100;
 
-    const animate = () => {
-      const elapsed = Date.now() - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 4);
-      setDisplay(value * eased);
-      if (progress < 1) raf.current = requestAnimationFrame(animate);
+        const animate = () => {
+          const elapsed = Date.now() - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 4);
+          count.set(value * eased);
+
+          if (progress < 1) {
+            frameId = requestAnimationFrame(animate);
+          } else {
+            count.set(value);
+            resolve();
+          }
+        };
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        frameId = requestAnimationFrame(animate);
+      });
     };
 
-    raf.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(raf.current);
-  }, [value]);
+    controls();
+  }, [value, count]);
 
-  return <>{prefix}{display.toFixed(decimals)}{suffix}</>;
+  return <motion.span>{display}</motion.span>;
 };
 
 interface KpiItemProps {
@@ -74,15 +90,25 @@ const KpiItem: FC<KpiItemProps> = ({
 
   const isPositiveTrend = (trend ?? 0) < 0;
 
+  const itemVariants = {
+    hidden: { opacity: 0, y: 16 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: index * 0.08,
+        duration: 0.3,
+      },
+    },
+  };
+
   return (
-    <div
+    <motion.div
       ref={ref}
-      className="relative overflow-hidden rounded-lg bg-(--color-bg-card) border border-(--color-border) shadow-(--shadow-card) p-4 transition-all duration-300 ease-out"
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(16px)",
-        transitionDelay: `${index * 80}ms`,
-      }}
+      className="relative overflow-hidden rounded-lg bg-(--color-bg-card) border border-(--color-border) shadow-(--shadow-card) p-4"
+      variants={itemVariants}
+      initial="hidden"
+      animate={visible ? "visible" : "hidden"}
     >
       <div
         className="absolute top-0 left-0 right-0 h-0.5 rounded-t-full"
@@ -132,7 +158,7 @@ const KpiItem: FC<KpiItemProps> = ({
       <div className="text-[11px] text-(--color-text-muted)  ">
         {sublabel}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

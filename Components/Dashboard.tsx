@@ -1,33 +1,65 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { useClusterData } from "../hooks/useClusterData";
 import KpiBar from "./KpiBar";
 import ClusterCard from "./ClusterCard";
 import NamespaceCard from "./NamespaceCard";
 import WorkflowCard from "./WorkflowCard";
 
-const SkeletonCard = ({ index }: { index: number }) => (
-  <div
-    className="rounded-lg bg-(--color-bg-card) border border-(--color-border) p-5 animate-[fadeIn_300ms_ease]"
-    style={{ animationDelay: `${index * 100}ms` }}
-  >
-    {[80, 50, 100, 60].map((w, i) => (
-      <div
-        key={i}
-        className="rounded-sm mb-3 animate-[shimmer_1.5s_infinite]"
-        style={{
-          height: i === 0 ? "20px" : "12px",
-          width: `${w}%`,
-          background:
-            "linear-gradient(90deg, var(--color-bg-inset) 25%, var(--color-bg-secondary) 50%, var(--color-bg-inset) 75%)",
-          backgroundSize: "200% 100%",
-          animationDelay: `${i * 200}ms`,
-        }}
-      />
-    ))}
-  </div>
-);
+const SkeletonCard = ({ index }: { index: number }) => {
+  const containerVariants = {
+    hidden: { opacity: 0, y: -8 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: index * 0.1,
+        duration: 0.3,
+      },
+    },
+  };
+
+  const shimmerVariants = {
+    initial: { backgroundPosition: "-200% 0" },
+    animate: {
+      backgroundPosition: "200% 0",
+      transition: {
+        duration: 1.5,
+        repeat: Infinity,
+        repeatType: "loop" as const,
+        delay: index * 0.2,
+      },
+    },
+  };
+
+  return (
+    <motion.div
+      className="rounded-lg bg-(--color-bg-card) border border-(--color-border) p-5"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      {[80, 50, 100, 60].map((w, i) => (
+        <motion.div
+          key={i}
+          className="rounded-sm mb-3"
+          style={{
+            height: i === 0 ? "20px" : "12px",
+            width: `${w}%`,
+            background:
+              "linear-gradient(90deg, var(--color-bg-inset) 25%, var(--color-bg-secondary) 50%, var(--color-bg-inset) 75%)",
+            backgroundSize: "200% 100%",
+          }}
+          variants={shimmerVariants}
+          initial="initial"
+          animate="animate"
+        />
+      ))}
+    </motion.div>
+  );
+};
 
 const Dashboard = () => {
   const { clusters, kpi, loading, error } = useClusterData();

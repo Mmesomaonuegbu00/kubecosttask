@@ -1,6 +1,7 @@
 'use client'
 
-import React, { FC, useState, useRef, useEffect } from "react";
+import React, { FC, useRef, useEffect, useState } from "react";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { Cluster } from "../hooks/useClusterData";
 import MetricsBar from "./MetricsBar";
 
@@ -11,27 +12,41 @@ interface ClusterCardProps {
 }
 
 const CountUp: FC<{ value: number; prefix?: string; decimals?: number }> = ({ value, prefix = "", decimals = 0 }) => {
-  const [display, setDisplay] = useState(0);
-  const raf = useRef<number>(0);
+  const count = useMotionValue(0);
+  const display = useTransform(count, (latest) => {
+    return `${prefix}${Math.floor(latest).toFixed(decimals)}`;
+  });
 
   useEffect(() => {
-    const start = Date.now();
-    const duration = 900;
-    const from = 0;
+    const controls = async () => {
+      await new Promise<void>((resolve) => {
+        let frameId: number;
+        const start = Date.now();
+        const duration = 900;
 
-    const animate = () => {
-      const elapsed = Date.now() - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplay(from + (value - from) * eased);
-      if (progress < 1) raf.current = requestAnimationFrame(animate);
+        const animate = () => {
+          const elapsed = Date.now() - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          count.set(value * eased);
+
+          if (progress < 1) {
+            frameId = requestAnimationFrame(animate);
+          } else {
+            count.set(value);
+            resolve();
+          }
+        };
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        frameId = requestAnimationFrame(animate);
+      });
     };
 
-    raf.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(raf.current);
-  }, [value]);
+    controls();
+  }, [value, count]);
 
-  return <>{prefix}{display.toFixed(decimals)}</>;
+  return <motion.span>{display}</motion.span>;
 };
 
 const ClusterCard: FC<ClusterCardProps> = ({ cluster, index, onClick }) => {
@@ -57,15 +72,25 @@ const ClusterCard: FC<ClusterCardProps> = ({ cluster, index, onClick }) => {
 
   const nsCount = cluster.namespaces.length;
 
+  const cardVariants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: index * 0.1,
+        duration: 0.5,
+      },
+    },
+  };
+
   return (
-    <div
+    <motion.div
       ref={ref}
       className="cluster-card flex-col flex gap-10"
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(24px)",
-        transitionDelay: `${index * 100}ms`,
-      }}
+      variants={cardVariants}
+      initial="hidden"
+      animate={visible ? "visible" : "hidden"}
       onClick={onClick}
     >
       <div className="p-5 pb-0 bg-(--color-bg-primary)  border border-(--color-border)  overflow-hidden transition-all duration-500 ease-out cursor-pointer min-h-30">
@@ -121,7 +146,7 @@ const ClusterCard: FC<ClusterCardProps> = ({ cluster, index, onClick }) => {
           </div>
           <MetricsBar metrics={cluster.metrics} />
         </div>
-    </div>
+    </motion.div>
   );
 };
 

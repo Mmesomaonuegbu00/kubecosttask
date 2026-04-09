@@ -1,4 +1,4 @@
-# Kubecost Dashboard
+# Kubecost Dashboard (Frontend Challenge)
 
 A modern, responsive dashboard for visualizing Kubernetes cost allocation across clusters, namespaces, and workflows. Built with Next.js, TypeScript, and Tailwind CSS.
 
@@ -24,7 +24,6 @@ kubecost/
 │   ├── KpiBar.tsx          # Key performance indicators
 │   ├── MetricsBar.tsx      # Resource allocation bars
 │   ├── NamespaceCard.tsx   # Namespace details card
-│   ├── SpendChart.tsx      # Cost visualization chart
 │   └── WorkflowCard.tsx    # Workflow cost card
 ├── hooks/
 │   └── useClusterData.ts   # Data fetching and caching hook
@@ -77,3 +76,6 @@ All styling uses CSS custom properties defined in `tokens/tokens.ts` for consist
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
+
+
+
