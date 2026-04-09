@@ -36,6 +36,16 @@ export interface KpiData {
   trend: number;
 }
 
+export interface Product {
+  title: string;
+  price: number;
+  stock: number;
+  rating: number;
+  discountPercentage: number;
+  id: number;
+  category?: string;
+}
+
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 const cache: { data: { clusters: Cluster[]; kpi: KpiData } | null; timestamp: number } = {
   data: null,
@@ -62,8 +72,8 @@ function metricTotal(m: Metrics) {
   return m.cpu + m.ram + m.storage + m.network + m.gpu + m.efficiency;
 }
 
-function parseProducts(products: any[]): Cluster[] {
-  const clusterMap = new Map<string, any[]>();
+function parseProducts(products: Product[]): Cluster[] {
+  const clusterMap = new Map<string, Product[]>();
   products.forEach((p, i) => {
     const key = `cluster-${(i % 4) + 1}`;
     if (!clusterMap.has(key)) clusterMap.set(key, []);
@@ -71,7 +81,7 @@ function parseProducts(products: any[]): Cluster[] {
   });
 
   return Array.from(clusterMap.entries()).map(([clusterName, items]) => {
-    const nsMap = new Map<string, any[]>();
+    const nsMap = new Map<string, Product[]>();
     items.forEach((p) => {
       const key = p.category || "default";
       if (!nsMap.has(key)) nsMap.set(key, []);
@@ -155,8 +165,8 @@ export function useClusterData() {
 
         setClusters(parsed);
         setKpi(kpiData);
-      } catch (e: any) {
-        if (e.name !== "AbortError") setError("Failed to fetch cluster data.");
+      } catch (e: unknown) {
+        if (e instanceof Error && e.name !== "AbortError") setError("Failed to fetch cluster data.");
       } finally {
         setLoading(false);
       }
