@@ -1,0 +1,36 @@
+// tokens.ts — single source of truth for all design values
+export const tokens = {
+  colors: {
+    bgPrimary: "var(--color-bg-primary)",
+    bgSecondary: "var(--color-bg-secondary)",
+    bgCard: "var(--color-bg-card)",
+    bgCardHover: "var(--color-bg-card-hover)",
+    bgInset: "var(--color-bg-inset)",
+    textPrimary: "var(--color-text-primary)",
+    textSecondary: "var(--color-text-secondary)",
+    textMuted: "var(--color-text-muted)",
+    accentPrimary: "var(--color-accent-primary)",
+    accentPrimaryAlpha: "var(--color-accent-primary-alpha)",
+    accentSuccess: "var(--color-accent-success)",
+    accentSuccessAlpha: "var(--color-accent-success-alpha)",
+    accentError: "var(--color-accent-error)",
+    accentErrorAlpha: "var(--color-accent-error-alpha)",
+    accentWarning: "var(--color-accent-warning)",
+    accentCpu: "var(--color-accent-cpu)",
+    accentRam: "var(--color-accent-ram)",
+    accentStorage: "var(--color-accent-storage)",
+    accentNetwork: "var(--color-accent-network)",
+    accentGpu: "var(--color-accent-gpu)",
+    accentEfficiency: "var(--color-accent-efficiency)",
+    border: "var(--color-border)",
+    borderStrong: "var(--color-border-strong)",
+  },
+ 
+  transition: {
+    fast: "var(--transition-fast)",
+    base: "var(--transition-base)",
+    slow: "var(--transition-slow)",
+    spring: "var(--transition-spring)",
+  },
+} as const;
+
